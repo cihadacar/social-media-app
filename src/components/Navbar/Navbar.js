@@ -11,7 +11,7 @@ import { lime } from '@mui/material/colors';
 function Navbar() {
   let userId = 5;
   const link = {
-    textDecoration: "none", boxShadow: "none",color: "white"
+    textDecoration: "none", boxShadow: "none", color: "#696567"
   }
   const title = {
     flexGrow: 1,
@@ -20,8 +20,7 @@ function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar sx={{bgcolor: l
-        ime[500]}} position="static">
+      <AppBar sx={{ color: "#696567", bgcolor: lime[500] }} position="static">
         <Toolbar>
           <IconButton
             size="large"
@@ -33,13 +32,13 @@ function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography style={title} variant="h6" component="div">
-          <Link style={link} to="/">Home</Link>
-        </Typography>
-        <Typography variant="h6" component="div">
-          <Link style={link} to={{ pathname: '/users/' + userId }}>User</Link>
-        </Typography>
-      </Toolbar>
-    </AppBar>
+            <Link style={link} to="/">Home</Link>
+          </Typography>
+          <Typography variant="h6" component="div">
+            <Link style={link} to={{ pathname: '/users/' + userId }}>User</Link>
+          </Typography>
+        </Toolbar>
+      </AppBar>
     </Box >
   );
 }

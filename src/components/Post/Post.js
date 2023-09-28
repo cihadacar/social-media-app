@@ -41,7 +41,7 @@ function Post(props) {
 
     return (
         <div className="postContainer">
-            <Card sx={{ width: 952, textAlign: "left" }}>
+            <Card sx={{ margin: 1, width: 800, textAlign: "left" }}>
                 <CardHeader
                     avatar={
                         <Link style={{textDecoration: "none"}} to={{ pathname: '/users/' + userId }}>
@@ -49,11 +49,6 @@ function Post(props) {
                                 {userName.charAt(0).toUpperCase()}
                             </Avatar>
                         </Link>
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
                     }
                     title={title}
                 // subheader="September 14, 2016"

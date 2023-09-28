@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Post from "../Post/Post";
+import PostForm from '../Post/PostForm';
 
 function Home() {
     const [error, setError] = useState(null);
@@ -12,10 +13,9 @@ function Home() {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: '#00acc1',
-        height: '100vh'
     }
 
-    useEffect(() => {
+    const refreshPosts = () => {
         fetch("/posts")
             .then(res => res.json())
             .then((result) => {
@@ -27,7 +27,11 @@ function Home() {
                     setError(error);
                 }
             )
-    }, [])
+    }
+
+    useEffect(() => {
+        refreshPosts();
+    }, [postList])
 
     if (error) {
         return <div>Error !! </div>
@@ -36,6 +40,7 @@ function Home() {
     } else {
         return (
             <div style={myContainer}>
+                <PostForm userId={1} userName={"post.userName"} refreshPosts={refreshPosts} />
                 {postList.map(post => (
                     <Post userId={post.userId} userName={post.userName} title={post.title} text={post.text}></Post>
 
