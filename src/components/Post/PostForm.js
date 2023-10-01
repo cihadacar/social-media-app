@@ -18,6 +18,7 @@ import { Link } from "react-router-dom/cjs/react-router-dom";
 import { Button, InputAdornment, OutlinedInput } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import SendIcon from '@mui/icons-material/Send';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -96,9 +97,10 @@ function PostForm(props) {
                         </Link>
                     }
                     title={<OutlinedInput
+                    size="small"
                         id="outlined-adornment-amount"
                         multiline
-                        placeholder="Title"
+                        placeholder="Post Title"
                         inputProps={{ maxLength: 25 }}
                         fullWidth
                         value={title}
@@ -111,7 +113,7 @@ function PostForm(props) {
                         {<OutlinedInput
                             id="outlined-adornment-amount"
                             multiline
-                            placeholder="Text"
+                            placeholder="Write your post here.."
                             inputProps={{ maxLength: 250 }}
                             fullWidth
                             value={text}
@@ -120,7 +122,8 @@ function PostForm(props) {
                                 <InputAdornment position="end">
                                     <Button
                                         variant="contained"
-                                        onClick={handleSubmit}>
+                                        onClick={handleSubmit}
+                                        endIcon={<SendIcon />}>
                                         Post
                                     </Button>
                                 </InputAdornment>
