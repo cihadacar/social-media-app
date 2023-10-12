@@ -1,7 +1,7 @@
 import { Avatar, Button, CardContent, InputAdornment, OutlinedInput } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import { lime } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { AddComment } from "@mui/icons-material";
 
 function CommentForm(props) {
@@ -13,6 +13,7 @@ function CommentForm(props) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("tokenKey")
             },
             body: JSON.stringify({
                 postId: postId,
@@ -45,7 +46,7 @@ function CommentForm(props) {
                 startAdornment={
                     <InputAdornment position="start">
                         <Link style={{ textDecoration: "none" }} to={{ pathname: '/users/' + userId }}>
-                            <Avatar sx={{ width: 27, height: 27, bgcolor: lime[900] }} aria-label="recipe">
+                            <Avatar sx={{ width: 27, height: 27, bgcolor: grey[800] }} aria-label="recipe">
                                 {userName.charAt(0).toUpperCase()}
                             </Avatar>
                         </Link>

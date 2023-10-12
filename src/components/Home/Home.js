@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Post from "../Post/Post";
 import PostForm from '../Post/PostForm';
+import { deepOrange } from '@mui/material/colors';
 
 function Home() {
     const [error, setError] = useState(null);
@@ -12,7 +13,7 @@ function Home() {
         flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: '#00acc1',
+        backgroundColor: deepOrange[50],
     }
 
     const refreshPosts = () => {
@@ -40,9 +41,11 @@ function Home() {
     } else {
         return (
             <div style={myContainer}>
-                <PostForm userId={1} userName={"post.userName"} refreshPosts={refreshPosts} />
+                {localStorage.getItem("currentUserId") == null ? "" :
+                    <PostForm userId={localStorage.getItem("currentUserId")} userName={localStorage.getItem("userName")} refreshPosts={refreshPosts} />}
                 {postList.map(post => (
-                    <Post likes = {post.postLikes} postId = {post.id} userId={post.userId} userName={post.userName} title={post.title} text={post.text}></Post>
+                    <Post likes={post.postLikes} postId={post.id} userId={post.userId} userName={post.userName}
+                        title={post.title} text={post.text}></Post>
 
                 ))}
             </div>

@@ -1,43 +1,21 @@
 import React, { useState } from "react";
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { lime } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CommentIcon from '@mui/icons-material/Comment';
+import { orange } from '@mui/material/colors';
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { Button, InputAdornment, OutlinedInput } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import SendIcon from '@mui/icons-material/Send';
 
-const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-    // transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
-
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 function PostForm(props) {
-    const [liked, setLiked] = useState(false);
-    const [expanded, setExpanded] = React.useState(false);
     const { userId, userName, refreshPosts } = props;
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
@@ -65,10 +43,11 @@ function PostForm(props) {
         refreshPosts();
     }
     const savePost = () => {
-        fetch("/posts", {
+        fetch("/posts/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization" : localStorage.getItem("tokenKey"),
             },
             body: JSON.stringify({
                 title: title,
@@ -91,13 +70,13 @@ function PostForm(props) {
                 <CardHeader
                     avatar={
                         <Link style={{ textDecoration: "none" }} to={{ pathname: '/users/' + userId }}>
-                            <Avatar sx={{ bgcolor: lime[900] }} aria-label="recipe">
+                            <Avatar sx={{ bgcolor: orange[800] }} aria-label="recipe">
                                 {userName.charAt(0).toUpperCase()}
                             </Avatar>
                         </Link>
                     }
                     title={<OutlinedInput
-                    size="small"
+                        size="small"
                         id="outlined-adornment-amount"
                         multiline
                         placeholder="Post Title"
@@ -121,6 +100,7 @@ function PostForm(props) {
                             endAdornment={
                                 <InputAdornment position="end">
                                     <Button
+                                        color="secondary"
                                         variant="contained"
                                         onClick={handleSubmit}
                                         endIcon={<SendIcon />}>

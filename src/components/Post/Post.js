@@ -8,11 +8,8 @@ import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { lime } from '@mui/material/colors';
+import { orange } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Comment from "../Comment/Comment";
@@ -40,6 +37,7 @@ function Post(props) {
     const [likesCount, setLikeCount] = useState(likes.length);
     const [likeId, setLikeId] = useState(null);
     const isInitialMount = useRef(true);
+    let disabled = localStorage.getItem("currentUserId") == null ? true : false;
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -52,7 +50,7 @@ function Post(props) {
         if (!isLiked) {
             saveLike();
             setLikeCount(likesCount + 1)
-        } else{
+        } else {
             deleteLike();
             setLikeCount(likesCount - 1)
         }
@@ -71,38 +69,43 @@ function Post(props) {
             )
     }
     const saveLike = () => {
-        fetch("/likes",{
+        fetch("/likes", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("tokenKey")
             },
             body: JSON.stringify({
                 postId: postId,
-                userId: userId
+                userId: localStorage.getItem("currentUserId")
             })
         })
-        .then((res) => res.json())
-        .catch((err) => console.log(err))
+            .then((res) => res.json())
+            .catch((err) => console.log(err))
     }
     const deleteLike = () => {
-        fetch("/likes/"+likeId, {
-            method: "DELETE"
+        fetch("/likes/" + likeId, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("tokenKey")
+            }
         })
-        .catch((err) => console.log(err))
+            .catch((err) => console.log(err))
     }
 
     const checkLikes = () => {
-        var likeControl = likes.find((like => like.userId === userId));
-        if (likeControl != null){
+        var likeControl = likes.find((like => "" + like.userId === localStorage.getItem("currentUserId")));
+        if (likeControl != null) {
             setLikeId(likeControl.id);
             setIsLiked(true);
         }
     }
     useEffect(() => {
-        if (isInitialMount.current){
+        if (isInitialMount.current) {
             isInitialMount.current = false;
-        }   
-        else{
+        }
+        else {
             refreshComments();
         }
     }, [commentList])
@@ -110,11 +113,11 @@ function Post(props) {
 
     return (
         <div className="postContainer">
-            <Card sx={{ margin: 1, marginLeft: 50, marginRight: 50, width: 800, textAlign: "left" }}>
+            <Card sx={{ margin: 1, marginLeft: 40, marginRight: 40, width: 800, textAlign: "left" }}>
                 <CardHeader
                     avatar={
                         <Link style={{ textDecoration: "none" }} to={{ pathname: '/users/' + userId }}>
-                            <Avatar sx={{ bgcolor: lime[900] }} aria-label="recipe">
+                            <Avatar sx={{ bgcolor: orange[800] }} aria-label="recipe">
                                 {userName.charAt(0).toUpperCase()}
                             </Avatar>
                         </Link>
@@ -128,9 +131,17 @@ function Post(props) {
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton onClick={handleLikeClick} aria-label="add to favorites">
-                        <FavoriteIcon style={isLiked ? { color: "red" } : null} />
-                    </IconButton>
+                    {disabled ?
+                        <IconButton
+                            disabled
+                            onClick={handleLikeClick}
+                            aria-label="add to favorites"
+                        >
+                            <FavoriteIcon style={isLiked ? { color: "red" } : null} />
+                        </IconButton> :
+                        <IconButton onClick={handleLikeClick} aria-label="add to favorites">
+                            <FavoriteIcon style={isLiked ? { color: "red" } : null} />
+                        </IconButton>}
                     {likesCount}
                     <ExpandMore
                         expand={expanded}
@@ -145,9 +156,10 @@ function Post(props) {
                     <CardContent>
                         {error ? "error" :
                             isLoaded ? commentList.map(comment => (
-                                <Comment userId={1} userName={"USER"} text={comment.text}></Comment>
+                                <Comment userId={userId} userName={userName} text={comment.text}></Comment>
                             )) : "Loading"}
-                        <CommentForm userId={1} userName={"USER"} postId={postId}></CommentForm>
+                        {disabled ? "" :
+                            <CommentForm userId={userId} userName={localStorage.getItem("userName")} postId={postId}></CommentForm>}
                     </CardContent>
                 </Collapse>
             </Card>
