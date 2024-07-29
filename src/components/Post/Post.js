@@ -109,6 +109,7 @@ function Post(props) {
             refreshComments();
         }
     }, [commentList])
+
     useEffect(() => { checkLikes() }, [])
 
     return (

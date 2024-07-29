@@ -46,7 +46,7 @@ function Navbar() {
             {localStorage.getItem("currentUserId") == null ? <Link style={link} to="/auth">Login/Register</Link> :
               <div>
                 <Link style={{ marginRight: 20, textDecoration: "none", boxShadow: "none", color: "white" }}
-                  to={{ pathname: '/users/' + localStorage.getItem("currentUserId") }}> {localStorage.getItem("userName")} Profile</Link>
+                  to={{ pathname: '/users/' + localStorage.getItem("currentUserId") }}> {localStorage.getItem("userName").toLocaleUpperCase()} Profile</Link>
                 <IconButton onClick={handleLogout}><Logout style={link}></Logout></IconButton>
               </div>}
           </Typography>
