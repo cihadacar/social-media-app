@@ -10,6 +10,7 @@ import Modal from '@mui/material/Modal';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import { ListItemSecondaryAction, Radio, RadioGroup } from "@mui/material";
+import { PutWithAuth } from "../../service/HttpService";
 
 const style = {
     position: 'absolute',
@@ -40,17 +41,8 @@ export default function Avatar(props) {
     };
 
     const saveAvatar = () => {
-        console.log("saveAvatar");
-        console.log(avatarId);
-        fetch("/users/" + localStorage.getItem("currentUserId"), {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("tokenKey"),
-            },
-            body: JSON.stringify({
-                avatar: checked,
-            }),
+        PutWithAuth("/users/" + localStorage.getItem("currentUserId"), {
+            avatar: checked,
         })
         .then((res) => res.json())
         .catch((err) => console.log(err))

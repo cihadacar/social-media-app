@@ -3,23 +3,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { grey } from '@mui/material/colors';
 import { AddComment } from "@mui/icons-material";
+import { PostWithAuth } from "../../service/HttpService";
 
 function CommentForm(props) {
     const { postId, userId, userName } = props;
     const [text, setText] = useState("");
 
     const saveComment = () => {
-        fetch("/comments", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("tokenKey")
-            },
-            body: JSON.stringify({
-                postId: postId,
-                userId: userId,
-                text: text,
-            }),
+        PostWithAuth("/comments", {
+            postId: postId,
+            userId: userId,
+            text: text,
         })
             .then((res) => res.json())
             .catch((err) => console.log(err))

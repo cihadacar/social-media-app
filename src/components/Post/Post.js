@@ -14,6 +14,7 @@ import CommentIcon from '@mui/icons-material/Comment';
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Comment from "../Comment/Comment";
 import CommentForm from "../Comment/CommentForm";
+import { DeleteWithAuth, PostWithAuth } from "../../service/HttpService";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -69,28 +70,15 @@ function Post(props) {
             )
     }
     const saveLike = () => {
-        fetch("/likes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("tokenKey")
-            },
-            body: JSON.stringify({
-                postId: postId,
-                userId: localStorage.getItem("currentUserId")
-            })
+        PostWithAuth("/likes", {
+            postId: postId,
+            userId: localStorage.getItem("currentUserId")
         })
             .then((res) => res.json())
             .catch((err) => console.log(err))
     }
     const deleteLike = () => {
-        fetch("/likes/" + likeId, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("tokenKey")
-            }
-        })
+        DeleteWithAuth("/likes/" + likeId)
             .catch((err) => console.log(err))
     }
 

@@ -16,6 +16,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
+import { GetWithAuth } from '../../service/HttpService';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -28,13 +29,7 @@ function PopUp(props) {
   const [post, setPost] = useState();
 
   const getPost = () => {
-    fetch("/posts/" + postId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": localStorage.getItem("tokenKey"),
-      },
-    })
+    GetWithAuth("/posts/" + postId)
       .then(res => res.json())
       .then(
         (result) => {
@@ -94,13 +89,7 @@ export default function UserActivity(props) {
   }
 
   const getActivity = () => {
-    fetch("/users/activity/" + userId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": localStorage.getItem("tokenKey"),
-      },
-    })
+    GetWithAuth("/users/activity/" + userId)
       .then(res => res.json())
       .then(
         (result) => {

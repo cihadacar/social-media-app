@@ -1,6 +1,7 @@
 import { Button, FormControl, FormHelperText, Input, InputLabel } from "@mui/material";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { PostWithoutAuth } from "../../service/HttpService";
 
 function Authentication() {
 
@@ -21,16 +22,11 @@ function Authentication() {
         history.go("/auth")
     }
     const sendRequest = (path) => {
-        fetch("/auth/" + path, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                userName: username,
-                password: password,
-            }),
-        }).then((res) => res.json())
+        PostWithoutAuth("/auth/" + path, {
+            userName: username,
+            password: password,
+        })
+        .then((res) => res.json())
             .then((result) => {
                 console.log(result);
                 localStorage.setItem("tokenKey", result.message);

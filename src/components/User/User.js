@@ -3,6 +3,7 @@ import Avatar from "../Avatar/Avatar";
 import UserActivity from "../UserActivity/UserActivity";
 import { deepOrange } from '@mui/material/colors';
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { GetWithAuth } from "../../service/HttpService";
 
 function User() {
     const {userId} = useParams();
@@ -14,13 +15,7 @@ function User() {
     }
 
     const getUser = () => {
-        fetch("/users/" + userId, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization" : localStorage.getItem("tokenKey"),
-            },
-        })
+        GetWithAuth("/users/" + userId)
         .then(res => res.json())
         .then(
             (result) => {
