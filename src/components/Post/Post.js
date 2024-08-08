@@ -38,8 +38,14 @@ function Post(props) {
     const [likesCount, setLikeCount] = useState(likes.length);
     const [likeId, setLikeId] = useState(null);
     const isInitialMount = useRef(true);
+    //state that used for refreshing comment list 
+    //(before that state comment refreshing was in a loop and it was sending request to backend non-stop)
+    const [refresh, setRefresh] = useState(false);
     let disabled = localStorage.getItem("currentUserId") == null ? true : false;
 
+    const setCommentRefresh = () => {
+        setRefresh(true);
+    }
     const handleExpandClick = () => {
         setExpanded(!expanded);
         refreshComments();
@@ -68,6 +74,7 @@ function Post(props) {
                     setError(error);
                 }
             )
+            setRefresh(false);
     }
     const saveLike = () => {
         PostWithAuth("/likes", {
@@ -96,7 +103,7 @@ function Post(props) {
         else {
             refreshComments();
         }
-    }, [commentList])
+    }, [refresh])
 
     useEffect(() => { checkLikes() }, [])
 
@@ -148,7 +155,7 @@ function Post(props) {
                                 <Comment userId={userId} userName={userName} text={comment.text}></Comment>
                             )) : "Loading"}
                         {disabled ? "" :
-                            <CommentForm userId={userId} userName={localStorage.getItem("userName")} postId={postId}></CommentForm>}
+                            <CommentForm userId={userId} userName={localStorage.getItem("userName")} postId={postId} setCommentRefresh={setCommentRefresh}></CommentForm>}
                     </CardContent>
                 </Collapse>
             </Card>

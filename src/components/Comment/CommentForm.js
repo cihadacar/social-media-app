@@ -6,7 +6,7 @@ import { AddComment } from "@mui/icons-material";
 import { PostWithAuth } from "../../service/HttpService";
 
 function CommentForm(props) {
-    const { postId, userId, userName } = props;
+    const { postId, userId, userName, setCommentRefresh } = props;
     const [text, setText] = useState("");
 
     const saveComment = () => {
@@ -21,6 +21,7 @@ function CommentForm(props) {
     const handleSubmit = () => {
         saveComment();
         setText("");
+        setCommentRefresh();
     }
     const handleChange = (input) => {
         setText(input);
