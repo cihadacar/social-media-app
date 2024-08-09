@@ -17,6 +17,7 @@ import Dialog from '@mui/material/Dialog';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { GetWithAuth } from '../../service/HttpService';
+import { deepOrange } from '@mui/material/colors';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -57,7 +58,7 @@ function PopUp(props) {
 
   return (
       <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
-        <AppBar position='relative'>
+        <AppBar sx={{ bgcolor: deepOrange[600] }} position='relative'>
           <Toolbar>
             <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
               <CloseIcon />

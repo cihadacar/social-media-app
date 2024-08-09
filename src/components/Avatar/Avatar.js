@@ -25,7 +25,7 @@ const style = {
 };
 
 export default function Avatar(props) {
-    const { avatarId } = props;
+    const { avatarId, userId, userName } = props;
     const [open, setOpen] = React.useState(false);
     const [checked, setChecked] = React.useState([avatarId]);
 
@@ -57,17 +57,18 @@ export default function Avatar(props) {
                     title="User Avatar"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        Username
+                    <Typography gutterBottom variant="h5" component="h2">
+                    {userName.toUpperCase()}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" component="p">
                         User info
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button align='center' size="small"
-                        onClick={handleOpen}
-                    >Change Avatar</Button>
+                    {localStorage.getItem("currentUserId") == userId ? 
+                    <Button align='center' size="small" onClick={handleOpen}>
+                        Change Avatar
+                    </Button> : ""}
                 </CardActions>
             </Card>
             <Modal

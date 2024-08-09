@@ -34,8 +34,8 @@ function User() {
 
     return (
         <div style={myContainer}>
-            {user? <Avatar avatarId={user.avatarId}/> : ""}
-            <UserActivity userId={userId} />
+            {user? <Avatar avatarId={user.avatarId} userId={userId} userName={user.userName} /> : ""}
+            {localStorage.getItem("currentUserId") == userId ? <UserActivity userId={userId} /> : ""}
         </div> 
     );
 }

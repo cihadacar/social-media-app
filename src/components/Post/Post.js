@@ -152,10 +152,10 @@ function Post(props) {
                     <CardContent>
                         {error ? "error" :
                             isLoaded ? commentList.map(comment => (
-                                <Comment userId={userId} userName={userName} text={comment.text}></Comment>
+                                <Comment userId={comment.userId} userName={comment.userName} text={comment.text}></Comment>
                             )) : "Loading"}
                         {disabled ? "" :
-                            <CommentForm userId={userId} userName={localStorage.getItem("userName")} postId={postId} setCommentRefresh={setCommentRefresh}></CommentForm>}
+                            <CommentForm userId={localStorage.getItem("currentUserId")} userName={localStorage.getItem("userName")} postId={postId} setCommentRefresh={setCommentRefresh}></CommentForm>}
                     </CardContent>
                 </Collapse>
             </Card>
