@@ -23,7 +23,8 @@ function Navbar() {
     localStorage.removeItem("tokenKey")
     localStorage.removeItem("currentUserId")
     localStorage.removeItem("userName")
-    history.go(0)
+    history.push('/')
+    window.location.reload(false)
   }
 
   return (
