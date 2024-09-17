@@ -28,8 +28,8 @@ function Authentication() {
         })
         .then((res) => res.json())
             .then((result) => {
-                console.log(result);
-                localStorage.setItem("tokenKey", result.message);
+                localStorage.setItem("tokenKey", result.accessToken);
+                localStorage.setItem("refreshToken", result.refreshToken)
                 localStorage.setItem("currentUserId", result.userId);
                 localStorage.setItem("userName", username)
             })

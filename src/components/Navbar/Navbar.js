@@ -21,6 +21,7 @@ function Navbar() {
   }
   const handleLogout = () => {
     localStorage.removeItem("tokenKey")
+    localStorage.removeItem("refreshToken")
     localStorage.removeItem("currentUserId")
     localStorage.removeItem("userName")
     history.push('/')

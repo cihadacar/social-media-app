@@ -3,20 +3,54 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import { grey } from '@mui/material/colors';
 import { AddComment } from "@mui/icons-material";
-import { PostWithAuth } from "../../service/HttpService";
+import { PostWithAuth, RefreshToken } from "../../service/HttpService";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function CommentForm(props) {
+    let history = useHistory();
     const { postId, userId, userName, setCommentRefresh } = props;
     const [text, setText] = useState("");
 
-    const saveComment = () => {
-        PostWithAuth("/comments", {
-            postId: postId,
-            userId: userId,
-            text: text,
+    const logout = () => {
+        localStorage.removeItem("tokenKey")
+        localStorage.removeItem("refreshToken")
+        localStorage.removeItem("currentUserId")
+        localStorage.removeItem("userName")
+        history.push('/')
+        window.location.reload(false)
+      }
+
+      const saveComment = () => {
+        PostWithAuth("/comments",{
+            postId: postId, 
+            userId : userId,
+            text : text,
+          })
+          .then((res) => {
+            if(!res.ok) {
+                RefreshToken()
+                .then((res) => { if(!res.ok) {
+                    logout();
+                } else {
+                   return res.json()
+                }})
+                .then((result) => {
+                    console.log(result)
+
+                    if(result != undefined){
+                        localStorage.setItem("tokenKey",result.accessToken);
+                        saveComment();
+                        setCommentRefresh();
+                    }})
+                .catch((err) => {
+                    console.log(err)
+                })
+            } else 
+            res.json()
         })
-            .then((res) => res.json())
-            .catch((err) => console.log(err))
+          .catch((err) => {
+            console.log(err)
+          })
     }
     const handleSubmit = () => {
         saveComment();
@@ -28,7 +62,7 @@ function CommentForm(props) {
     }
 
     return (
-        <CardContent style={{marginLeft:10}}>
+        <CardContent style={{ marginLeft: 10 }}>
             <OutlinedInput
                 size="small"
                 placeholder="Write your comment here.."
@@ -50,8 +84,8 @@ function CommentForm(props) {
                 endAdornment={
                     <InputAdornment position="end">
                         <Button
-                        color="secondary"
-                        size="small"
+                            color="secondary"
+                            size="small"
                             variant="outlined"
                             onClick={handleSubmit}
                             endIcon={<AddComment />}>
